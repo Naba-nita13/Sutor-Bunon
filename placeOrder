@@ -1,0 +1,37 @@
+function placeOrder(e) {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const address = document.getElementById("address").value.trim();
+
+  if (cart.length === 0) {
+    document.getElementById("order-msg").textContent = "❌ Your cart is empty!";
+    return;
+  }
+
+  if (!name || !address) {
+    document.getElementById("order-msg").textContent = "❌ Please enter your name and address!";
+    return;
+  }
+
+  const order = {
+    name,
+    address,
+    items: cart,
+    payment: "Cash on Delivery",   // ✅ added payment method
+    date: new Date().toLocaleString(),
+  };
+
+  // Save to localStorage
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  orders.push(order);
+  localStorage.setItem("orders", JSON.stringify(orders));
+
+  // Clear cart after order
+  cart = [];
+  localStorage.removeItem("cart");
+  updateCart();
+
+  document.getElementById("order-msg").textContent = "✅ Order placed successfully! (Cash on Delivery)";
+  document.getElementById("name").value = "";
+  document.getElementById("address").value = "";
+}

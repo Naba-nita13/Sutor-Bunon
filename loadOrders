@@ -1,0 +1,25 @@
+function loadOrders() {
+  const orderList = document.getElementById("order-list");
+  if (orderList) {
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orderList.innerHTML = "";
+
+    if (orders.length === 0) {
+      orderList.innerHTML = "<li>No orders yet.</li>";
+      return;
+    }
+
+    orders.forEach((order, index) => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <strong>Customer:</strong> ${order.name} <br>
+        <strong>Address:</strong> ${order.address} <br>
+        <strong>Items:</strong> ${order.items.map(i => i.name + " (" + i.price + " TK)").join(", ")} <br>
+        <strong>Payment:</strong> ${order.payment} <br>
+        <strong>Date:</strong> ${order.date} <br>
+        <button onclick="cancelOrder(${index})">❌ Cancel Order</button>
+      `;
+      orderList.appendChild(li);
+    });
+  }
+}
